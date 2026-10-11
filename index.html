@@ -1,0 +1,418 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="theme-color" content="#08162f">
+  <title>Miiさんへ｜仲間からの手紙</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kaisei+Decol:wght@500;700&family=Zen+Maru+Gothic:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      color-scheme: dark;
+      --night: #08162f;
+      --gold: #e8c38f;
+      --gold-soft: rgba(232,195,143,.55);
+      --peach: #ffd2a3;
+      --ice: #c9e9f2;
+      --lilac: #ddd3f5;
+      --cream: #fff8ee;
+      --paper: #fffcf6;
+      --paper-2: #f4ede1;
+      --ink: #26364a;
+      --ease: cubic-bezier(.22,.8,.24,1);
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html { background: var(--night); }
+    body {
+      margin: 0; min-width: 320px; overflow-x: hidden; color: var(--cream);
+      font-family: "Zen Maru Gothic", sans-serif; -webkit-font-smoothing: antialiased;
+      background: radial-gradient(ellipse at 50% 8%, #1c3662 0, transparent 50%), linear-gradient(180deg, #08162f, #101a37 58%, #0d1529);
+    }
+    body.locked { overflow: hidden; height: 100svh; }
+    h1, h2, .serif { font-family: "Kaisei Decol", serif; font-weight: 500; }
+    .nw { display: inline-block; }
+    svg.icon { width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
+
+    .aurora { position: fixed; z-index: 0; inset: -20% -30% auto; height: 65vh; min-height: 380px; pointer-events: none; opacity: .38; filter: blur(85px);
+      background: radial-gradient(ellipse at 18% 42%, rgba(55,203,175,.24), transparent 34%), radial-gradient(ellipse at 70% 36%, rgba(170,126,255,.28), transparent 38%), radial-gradient(ellipse at 88% 70%, rgba(90,210,236,.2), transparent 34%);
+      animation: aurora 20s ease-in-out infinite alternate; }
+    @keyframes aurora { to { transform: translate3d(5%,4%,0) rotate(4deg) scale(1.1); } }
+    #sky { position: fixed; inset: 0; z-index: 1; pointer-events: none; }
+    main, footer { position: relative; z-index: 2; }
+
+    /* ---------- Opening ---------- */
+    .opening { position: fixed; inset: 0; z-index: 20; display: grid; place-items: center; padding: 24px 16px;
+      background: radial-gradient(ellipse at 50% 45%, #1a3058, #050c1a 75%); transition: opacity 1s ease, visibility 1s; }
+    .opening.done { opacity: 0; visibility: hidden; pointer-events: none; }
+    .opening-inner { text-align: center; }
+    .opening-kicker { margin: 0 0 14px; color: var(--gold); font-size: .62rem; letter-spacing: .38em; }
+    .opening-lead { margin: 0 0 40px; font-family: "Kaisei Decol", serif; font-size: clamp(1.2rem, 5.2vw, 1.6rem); line-height: 2; letter-spacing: .1em; transition: opacity .6s ease, transform .6s var(--ease); }
+    .opening.opening-now .opening-lead, .opening.opening-now .tap-hint, .opening.opening-now .opening-kicker { opacity: 0; transform: translateY(-8px); }
+    .tap-hint { margin: 34px 0 0; color: var(--peach); font-size: .74rem; letter-spacing: .3em; animation: pulse 2.2s ease-in-out infinite; transition: opacity .4s; }
+    @keyframes pulse { 50% { opacity: .45; } }
+
+    .env-wrap { display: block; margin: 0 auto; padding: 0; border: 0; background: none; cursor: pointer; -webkit-tap-highlight-color: transparent; animation: bob 4s ease-in-out infinite; }
+    .opening.opening-now .env-wrap { animation: none; }
+    @keyframes bob { 50% { transform: translateY(-9px); } }
+    .env { display: block; position: relative; width: min(76vw, 300px); aspect-ratio: 300 / 194; perspective: 900px; }
+    .env > * { position: absolute; }
+    .env-back { inset: 0; border-radius: 6px; background: linear-gradient(180deg, #d9bc95, #e8d2b2); box-shadow: 0 30px 80px rgba(0,0,0,.5); }
+    .letter { left: 7%; right: 7%; top: 6%; height: 86%; z-index: 2; border-radius: 3px; display: grid; place-items: center; align-content: center; gap: 6px;
+      background: linear-gradient(180deg, #fffdf8, #f6efe2); box-shadow: 0 2px 10px rgba(80,50,20,.15); transition: transform 1.1s var(--ease); }
+    .letter-to { font-family: "Kaisei Decol", serif; color: #6b4a2b; font-size: clamp(.95rem, 4.6vw, 1.2rem); letter-spacing: .14em; }
+    .letter-line { width: 40%; height: 1px; background: linear-gradient(90deg, transparent, #d8b483, transparent); }
+    .env-front { inset: 0; z-index: 3; border-radius: 6px; clip-path: polygon(0 0, 50% 64%, 100% 0, 100% 100%, 0 100%);
+      background: linear-gradient(170deg, #f6e6cc 0%, #ead2ae 100%); }
+    .env-front::after { content: ""; position: absolute; inset: 0; background: linear-gradient(33deg, transparent 49.6%, rgba(190,150,105,.45) 50%, transparent 50.6%), linear-gradient(-32deg, transparent 49.6%, rgba(190,150,105,.45) 50%, transparent 50.6%); }
+    .env-flap { left: 0; right: 0; top: 0; height: 64%; z-index: 4; transform-origin: 50% 0; clip-path: polygon(0 0, 100% 0, 50% 100%);
+      background: linear-gradient(180deg, #fbefdc, #ecd5b3); transition: transform .8s var(--ease); backface-visibility: visible; }
+    .env-flap::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 70%, rgba(150,110,70,.18)); }
+    .seal { left: 50%; top: 64%; z-index: 5; width: 25%; aspect-ratio: 1; transform: translate(-50%, -50%); transition: transform .5s var(--ease), opacity .5s ease; filter: drop-shadow(0 4px 6px rgba(90,30,10,.35)); }
+    .seal svg { width: 100%; height: 100%; display: block; }
+    .env.s1 .seal { transform: translate(-50%, -30%) scale(.6) rotate(-20deg); opacity: 0; }
+    .env.s2 .env-flap { transform: rotateX(180deg); }
+    .env.s3 .env-flap { z-index: 1; }
+    .env.s3 .letter { transform: translateY(-62%); }
+
+    /* ---------- Hero ---------- */
+    .hero { min-height: 100svh; display: grid; place-items: center; padding: 72px 16px 64px; text-align: center; position: relative; }
+    .hero-inner { width: min(100%, 620px); }
+    .state { display: inline-block; padding: 7px 18px; color: var(--peach); font-size: .64rem; letter-spacing: .34em; border-top: 1px solid var(--gold-soft); border-bottom: 1px solid rgba(232,195,143,.25); }
+    h1 { margin: 22px 0 6px; font-size: clamp(2.6rem, 11vw, 4.6rem); line-height: 1.3; letter-spacing: .1em; color: #fffaf2; text-shadow: 0 6px 30px rgba(255,190,120,.18); }
+    .ornament { display: flex; align-items: center; justify-content: center; gap: 12px; margin: 10px auto 18px; color: var(--gold); font-size: 18px; }
+    .ornament::before, .ornament::after { content: ""; width: 56px; height: 1px; background: linear-gradient(90deg, transparent, var(--gold-soft)); }
+    .ornament::after { transform: scaleX(-1); }
+    .hero-copy { margin: 0 auto; max-width: 26em; font-family: "Kaisei Decol", serif; font-size: clamp(.95rem, 4vw, 1.12rem); line-height: 2.1; text-wrap: balance; color: #f6efe6; }
+    .count-wrap { margin: 30px 0 4px; font-size: .82rem; letter-spacing: .16em; color: #f2e4d2; }
+    .count { font-family: "Kaisei Decol", serif; font-size: 1.9rem; color: var(--peach); margin-right: 4px; display: inline-block; min-width: 1.4em; }
+
+    /* name bouquet */
+    .bouquet { position: relative; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 6px 14px; max-width: 520px; margin: 16px auto 0; padding: 18px 6px; }
+    .bouquet::before { content: ""; position: absolute; inset: 0; z-index: -1; border-radius: 50%; background: radial-gradient(ellipse, rgba(255,200,140,.10), transparent 70%); filter: blur(6px); }
+    .bq-name { display: inline-block; white-space: nowrap; opacity: 0; transform: translateY(14px) scale(.9); font-family: "Kaisei Decol", serif; letter-spacing: .04em;
+      text-shadow: 0 0 14px rgba(255,220,170,.25); transition: opacity 1.2s ease, transform 1.2s var(--ease); }
+    .bq-name.show { opacity: var(--o, .9); transform: none; }
+    .bq-name > span { display: inline-block; animation: drift var(--d, 8s) ease-in-out var(--dl, 0s) infinite alternate; }
+    @keyframes drift { from { transform: translate(calc(var(--x, 4px) * -1), calc(var(--y, 6px) * -1)) rotate(calc(var(--r, 2deg) * -1)); } to { transform: translate(var(--x, 4px), var(--y, 6px)) rotate(var(--r, 2deg)); } }
+
+    .scroll-cue { position: absolute; bottom: 18px; left: 50%; transform: translateX(-50%); color: rgba(255,245,229,.6); font-size: .58rem; letter-spacing: .3em; }
+    .scroll-cue::after { content: ""; display: block; width: 1px; height: 22px; margin: 8px auto 0; background: linear-gradient(var(--gold), transparent); animation: cue 2.4s ease-in-out infinite; transform-origin: top; }
+    @keyframes cue { 0% { transform: scaleY(0); } 50% { transform: scaleY(1); } 100% { transform: scaleY(1); opacity: 0; } }
+
+    /* ---------- Sections ---------- */
+    .section { width: min(100% - 32px, 860px); margin: 0 auto; padding: 72px 0 70px; }
+    .sec-head { text-align: center; margin-bottom: 28px; }
+    .sec-icon { display: inline-grid; place-items: center; width: 46px; height: 46px; border-radius: 50%; color: var(--gold); font-size: 22px; border: 1px solid rgba(232,195,143,.35); background: radial-gradient(circle, rgba(232,195,143,.12), transparent 70%); }
+    .sec-head h2 { margin: 14px 0 8px; font-size: clamp(1.4rem, 5.8vw, 2rem); letter-spacing: .06em; color: #fff4e3; text-wrap: balance; }
+    .sec-head p { margin: 0; color: rgba(220,233,245,.66); font-size: .8rem; letter-spacing: .04em; line-height: 1.9; text-wrap: balance; }
+
+    .reveal { opacity: 0; transform: translateY(18px); transition: opacity .9s ease, transform .9s var(--ease); }
+    .reveal.in { opacity: 1; transform: none; }
+
+    .titles { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+    .title-badge { display: inline-flex; align-items: center; gap: 8px; padding: 9px 15px; border-radius: 999px; font-size: .82rem; font-weight: 700; letter-spacing: .03em; color: #fff3e1;
+      border: 1px solid rgba(232,195,143,.42); background: linear-gradient(135deg, rgba(255,210,163,.16), rgba(221,211,245,.08)); box-shadow: inset 0 1px rgba(255,255,255,.12); }
+    .title-badge svg { color: var(--gold); font-size: 14px; flex: none; }
+
+    .grid { display: grid; grid-template-columns: minmax(0,1fr); gap: 14px; align-items: start; }
+    .card { position: relative; padding: 22px 20px 18px; border-radius: 4px 18px 4px 18px; color: var(--ink);
+      background: linear-gradient(150deg, var(--paper), var(--paper-2)); box-shadow: 0 14px 34px rgba(0,0,0,.24); overflow: hidden; }
+    .card::before { content: ""; position: absolute; top: 0; left: 18px; right: 18px; height: 2px; background: linear-gradient(90deg, transparent, #e2a866, #a9cfd6, #c7b6e8, transparent); }
+    .card-title { display: inline-flex; align-items: center; gap: 6px; margin-bottom: 12px; padding: 3px 10px; border-radius: 999px; background: #f7e7d0; color: #8a5a2f; font-size: .7rem; font-weight: 700; letter-spacing: .04em; }
+    .card-title svg { font-size: 11px; }
+    .card-body { margin: 0; font-size: .92rem; line-height: 2; white-space: pre-line; overflow-wrap: anywhere; color: #2b3b4f; }
+    .card-name { display: flex; justify-content: flex-end; align-items: center; gap: 8px; margin: 16px 0 0; color: #6a7f90; font-size: .8rem; font-weight: 700; letter-spacing: .05em; }
+    .card-name::before { content: ""; width: 18px; height: 1px; background: #c3a07a; }
+
+    .oops { display: grid; grid-template-columns: minmax(0,1fr); gap: 10px; }
+    .oop { display: flex; gap: 13px; align-items: flex-start; padding: 15px 16px; border-radius: 4px 14px 4px 14px; border: 1px solid rgba(205,226,241,.16);
+      background: linear-gradient(135deg, rgba(229,241,249,.1), rgba(202,218,235,.04)); }
+    .oop-icon { flex: none; display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; color: var(--ice); font-size: 16px; background: rgba(201,233,242,.1); margin-top: 1px; }
+    .oop p { margin: 0; font-size: .88rem; line-height: 1.85; overflow-wrap: anywhere; color: #eef4f8; }
+    .oop small { display: block; margin-top: 4px; color: var(--peach); font-size: .74rem; letter-spacing: .04em; }
+
+    /* ---------- Ending ---------- */
+    .ending { position: relative; padding: 90px 16px 90px; text-align: center; border-top: 1px solid rgba(204,225,241,.08); }
+    .fire { position: relative; width: 120px; height: 150px; margin: 0 auto 10px; }
+    .fire-glow { position: absolute; left: 50%; top: 58%; width: 260px; height: 200px; transform: translate(-50%,-50%); border-radius: 50%; background: radial-gradient(ellipse, rgba(255,150,60,.32), transparent 65%); animation: glow 2.8s ease-in-out infinite; pointer-events: none; }
+    @keyframes glow { 50% { opacity: .65; transform: translate(-50%,-50%) scale(.92); } }
+    .fire svg { position: relative; width: 100%; height: 100%; overflow: visible; }
+    .flame { transform-box: fill-box; transform-origin: 50% 100%; }
+    .f1 { animation: flick 1.9s ease-in-out infinite alternate; }
+    .f2 { animation: flick 1.4s ease-in-out infinite alternate-reverse; }
+    .f3 { animation: flick 1.1s ease-in-out infinite alternate; }
+    @keyframes flick { 0% { transform: scale(1,1) skewX(0); } 35% { transform: scale(.96,1.05) skewX(2deg); } 70% { transform: scale(1.03,.95) skewX(-2.5deg); } 100% { transform: scale(.98,1.04) skewX(1deg); } }
+    .ember { animation: ember 3s ease-in infinite; opacity: 0; }
+    .ember:nth-of-type(2) { animation-delay: 1s; } .ember:nth-of-type(3) { animation-delay: 2s; }
+    @keyframes ember { 0% { opacity: 0; transform: translate(0,0); } 15% { opacity: 1; } 100% { opacity: 0; transform: translate(10px,-70px); } }
+    .ending h2 { margin: 6px 0 14px; font-size: clamp(1.55rem, 6.4vw, 2.5rem); letter-spacing: .07em; color: #fff3e2; text-wrap: balance; }
+    .ending p { margin: 0 auto; max-width: 24em; color: #e9e0d4; font-family: "Kaisei Decol", serif; font-size: .92rem; line-height: 2.1; text-wrap: balance; }
+    footer { padding: 22px 16px 34px; text-align: center; color: rgba(212,223,235,.5); font-size: .68rem; letter-spacing: .18em; border-top: 1px solid rgba(204,225,241,.06); }
+
+    @media (min-width: 640px) {
+      .grid { grid-template-columns: repeat(2, minmax(0,1fr)); gap: 18px; }
+      .oops { grid-template-columns: repeat(2, minmax(0,1fr)); }
+      .section { padding: 90px 0 86px; }
+    }
+    @media (min-width: 960px) { .grid { grid-template-columns: repeat(3, minmax(0,1fr)); } }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition-duration: .01ms !important; }
+      .reveal, .bq-name { opacity: 1 !important; transform: none !important; }
+    }
+  </style>
+</head>
+<body class="locked">
+  <!-- 共通アイコン（SVG） -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <symbol id="i-flake" viewBox="-12 -12 24 24">
+        <g id="arm"><path d="M0 0V-10M0-6.5L-2.8-9.2M0-6.5L2.8-9.2M0-3L-1.8-4.8M0-3L1.8-4.8"/></g>
+        <use href="#arm" transform="rotate(60)"/><use href="#arm" transform="rotate(120)"/>
+        <use href="#arm" transform="rotate(180)"/><use href="#arm" transform="rotate(240)"/><use href="#arm" transform="rotate(300)"/>
+      </symbol>
+      <symbol id="i-crown" viewBox="0 0 24 24"><path d="M4 17.5 3 8l5 4 4-6.5 4 6.5 5-4-1 9.5Z"/><path d="M5 20.5h14"/></symbol>
+      <symbol id="i-letter" viewBox="0 0 24 24"><rect x="3" y="5.5" width="18" height="13" rx="1.6"/><path d="m3.6 6.5 8.4 6.6 8.4-6.6"/></symbol>
+      <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 3c.6 4.4 2.6 6.4 7 7-4.4.6-6.4 2.6-7 7-.6-4.4-2.6-6.4-7-7 4.4-.6 6.4-2.6 7-7Z"/><path d="M19 16.5c.25 1.6.9 2.25 2.5 2.5-1.6.25-2.25.9-2.5 2.5-.25-1.6-.9-2.25-2.5-2.5 1.6-.25 2.25-.9 2.5-2.5Z"/></symbol>
+      <symbol id="i-orbit" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.2"/><path d="M4.5 15.5c-1.6-3.2 1.7-7.7 7.3-10s10.3-1.2 11 1.7"/><path d="M19.5 8.5c1.6 3.2-1.7 7.7-7.3 10S1.9 19.7 1.2 16.8"/></symbol>
+    </defs>
+  </svg>
+
+  <div class="aurora" aria-hidden="true"></div>
+  <canvas id="sky" aria-hidden="true"></canvas>
+
+  <!-- オープニング -->
+  <div class="opening" id="opening" role="dialog" aria-modal="true" aria-labelledby="openingLead">
+    <div class="opening-inner">
+      <p class="opening-kicker">A LETTER FROM STATE 1998</p>
+      <p class="opening-lead" id="openingLead">Miiさんへ<br>仲間からの手紙が届いています</p>
+      <button class="env-wrap" id="openBtn" type="button" aria-label="手紙を開く">
+        <span class="env" id="env" aria-hidden="true">
+          <span class="env-back"></span>
+          <span class="letter"><span class="letter-to">Dear Mii</span><span class="letter-line"></span></span>
+          <span class="env-front"></span>
+          <span class="env-flap"></span>
+          <span class="seal">
+            <svg viewBox="0 0 100 100">
+              <defs>
+                <radialGradient id="wax" cx="38%" cy="32%" r="75%">
+                  <stop offset="0" stop-color="#ffb46a"/><stop offset=".45" stop-color="#ec7a33"/><stop offset="1" stop-color="#b44a17"/>
+                </radialGradient>
+                <filter id="melt" x="-10%" y="-10%" width="120%" height="120%">
+                  <feTurbulence type="fractalNoise" baseFrequency=".045" numOctaves="2" seed="7"/>
+                  <feDisplacementMap in="SourceGraphic" scale="9"/>
+                </filter>
+              </defs>
+              <circle cx="50" cy="50" r="44" fill="url(#wax)" filter="url(#melt)"/>
+              <circle cx="50" cy="50" r="31" fill="none" stroke="#a9441a" stroke-width="2" opacity=".55"/>
+              <circle cx="50" cy="50" r="31" fill="none" stroke="#ffc58a" stroke-width="1" opacity=".5" transform="translate(-.8 -.8)"/>
+              <g transform="translate(50 50) scale(1.75)" fill="none" stroke-linecap="round">
+                <use href="#i-flake" x="-12" y="-12" width="24" height="24" stroke="#ffcf98" stroke-width="1.3" opacity=".75" transform="translate(-.5 -.5)"/>
+                <use href="#i-flake" x="-12" y="-12" width="24" height="24" stroke="#9c3c14" stroke-width="1.3" opacity=".65"/>
+              </g>
+              <ellipse cx="36" cy="30" rx="12" ry="6" fill="#fff" opacity=".18" transform="rotate(-25 36 30)"/>
+            </svg>
+          </span>
+        </span>
+      </button>
+      <p class="tap-hint">TAP TO OPEN</p>
+    </div>
+  </div>
+
+  <main>
+    <header class="hero">
+      <div class="hero-inner">
+        <span class="state">STATE 1998</span>
+        <h1>Miiさんへ</h1>
+        <div class="ornament" aria-hidden="true"><svg class="icon"><use href="#i-flake"/></svg></div>
+        <p class="hero-copy"><span class="nw">長いあいだ、</span><span class="nw">この雪原を守ってくれて</span><span class="nw">ありがとう。</span><br><span class="nw">離れても、私たちは</span><span class="nw">同じ空の下の仲間です。</span></p>
+        <p class="count-wrap"><span class="count" id="count">0</span>人の仲間から</p>
+        <div class="bouquet" id="bouquet" aria-label="寄せ書きをした仲間の名前"></div>
+      </div>
+      <div class="scroll-cue" aria-hidden="true">SCROLL</div>
+    </header>
+
+    <section class="section" id="titlesSec" hidden>
+      <div class="sec-head reveal">
+        <span class="sec-icon"><svg class="icon"><use href="#i-crown"/></svg></span>
+        <h2>二つ名コレクション</h2>
+        <p>みんなが勝手につけた、Miiさんの称号。</p>
+      </div>
+      <div class="titles reveal" id="titles"></div>
+    </section>
+
+    <section class="section">
+      <div class="sec-head reveal">
+        <span class="sec-icon"><svg class="icon"><use href="#i-letter"/></svg></span>
+        <h2>みんなからのメッセージ</h2>
+        <p><span class="nw">同じ雪原で笑って、戦って、</span><span class="nw">支え合った日々を忘れません。</span></p>
+      </div>
+      <div class="grid" id="grid"></div>
+    </section>
+
+    <section class="section" id="oopsSec" hidden>
+      <div class="sec-head reveal">
+        <span class="sec-icon"><svg class="icon"><use href="#i-orbit"/></svg></span>
+        <h2>移民先でやらかしそうなこと予想</h2>
+        <p>新天地でも、いつものMiiさんで。</p>
+      </div>
+      <div class="oops" id="oops"></div>
+    </section>
+
+    <section class="ending reveal">
+      <div class="fire" aria-hidden="true">
+        <div class="fire-glow"></div>
+        <svg viewBox="0 0 120 150">
+          <defs>
+            <linearGradient id="fo" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#e2531d"/><stop offset=".6" stop-color="#f88a2f"/><stop offset="1" stop-color="#ffb35c" stop-opacity=".2"/></linearGradient>
+            <linearGradient id="fm" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#ff9a3a"/><stop offset="1" stop-color="#ffd27d" stop-opacity=".4"/></linearGradient>
+            <linearGradient id="fi" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#fff3c9"/><stop offset="1" stop-color="#ffe29a" stop-opacity=".5"/></linearGradient>
+          </defs>
+          <path class="flame f1" fill="url(#fo)" d="M60 8C68 34 92 46 89 80c-2 22-14 38-29 38S33 102 31 80c-2-20 9-29 12-42 6 12 12 14 12 14C55 38 50 24 60 8Z"/>
+          <path class="flame f2" fill="url(#fm)" d="M60 40c6 16 20 26 18 46-1 14-8 26-18 26s-17-12-18-26c-1-12 6-20 9-28 3 8 7 10 7 10 0-10-3-18 2-28Z"/>
+          <path class="flame f3" fill="url(#fi)" d="M60 70c4 9 11 15 10 27-1 8-5 14-10 14s-9-6-10-14c-1-10 6-16 10-27Z"/>
+          <circle class="ember" cx="54" cy="70" r="1.6" fill="#ffd08a"/>
+          <circle class="ember" cx="66" cy="62" r="1.2" fill="#ffe0a8"/>
+          <circle class="ember" cx="60" cy="74" r="1.4" fill="#ffc275"/>
+          <rect x="22" y="114" width="76" height="11" rx="5.5" fill="#5b3a24" transform="rotate(-11 60 119)"/>
+          <rect x="22" y="114" width="76" height="11" rx="5.5" fill="#6d4630" transform="rotate(11 60 119)"/>
+        </svg>
+      </div>
+      <h2>いってらっしゃい、Miiさん</h2>
+      <p><span class="nw">あなたがいた雪原は、</span><span class="nw">これからも私たちの帰る場所です。</span></p>
+    </section>
+  </main>
+  <footer>Whiteout Survival の仲間一同より</footer>
+
+  <script>
+    // ===== メッセージデータ（ここを差し替え） =====
+    // msg は必須。title / oops は空欄ならその人の項目を表示しません。
+    const MESSAGES = [
+      { name: "雪原のミカン", msg: "Miiさん、今まで本当にありがとう！\n困ったときにいつも助けてくれて、何度も心強かったです。新しいサーバーでも元気でね！", title: "雪原の頼れる太陽", oops: "新しい同盟でも、気づいたらみんなの相談役になってそう！" },
+      { name: "Kuma隊長", msg: "一緒に戦ったイベントも、何気ないチャットも大切な思い出です。\nMiiさんの新しい冒険に、たくさんの幸運がありますように。", title: "同盟を照らす灯台", oops: "移民先でも張り切りすぎて、初日からイベントの作戦会議を始める。" },
+      { name: "しろくまパン", msg: "長いあいだサーバーを支えてくれてありがとう！\n離れても仲間なのは変わらないよ。また遊びに来てね", title: "みかんの守護神", oops: "挨拶のつもりでチャットしたら、気づけば同盟のみんなと大盛り上がり。" },
+      { name: "Nagi", msg: "Miiさんと過ごせてよかった！\n新天地でも無理せず、Miiさんらしく楽しんでね。いつでも応援してます。", title: "雪原のムードメーカー", oops: "" },
+      { name: "灯火", msg: "たくさん助けてもらった分、これからは新しい仲間と楽しい時間を作ってね。\nまたどこかの雪原で会おう！", title: "", oops: "お礼を言いに行ったはずが、いつの間にか作戦を手伝っている。" },
+      { name: "ぽかぽか鍋", msg: "今まで本当にありがとう。\nMiiさんの優しさと笑顔は、ずっとこのサーバーの宝物です！いってらっしゃい！", title: "永遠のオレンジ隊長", oops: "新サーバーでもみかんを見つけて、同盟の合言葉にしちゃいそう。" }
+    ];
+
+    const $ = (id) => document.getElementById(id);
+    const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const make = (tag, cls, text) => { const n = document.createElement(tag); if (cls) n.className = cls; if (text != null) n.textContent = text; return n; };
+    const icon = (id) => { const s = document.createElementNS("http://www.w3.org/2000/svg", "svg"); s.setAttribute("class", "icon"); s.setAttribute("aria-hidden", "true");
+      const u = document.createElementNS("http://www.w3.org/2000/svg", "use"); u.setAttribute("href", "#" + id); s.append(u); return s; };
+    const clean = (v) => String(v ?? "").trim();
+
+    const items = MESSAGES.filter((m) => m && clean(m.msg));
+    const nameOf = (m) => clean(m.name) || "なかま";
+
+    // --- 二つ名
+    const titled = items.filter((m) => clean(m.title));
+    if (titled.length) {
+      $("titlesSec").hidden = false;
+      titled.forEach((m) => { const b = make("span", "title-badge"); b.append(icon("i-crown"), make("span", null, clean(m.title))); $("titles").append(b); });
+    }
+
+    // --- メッセージ
+    items.forEach((m) => {
+      const c = make("article", "card reveal");
+      if (clean(m.title)) { const t = make("span", "card-title"); t.append(icon("i-crown"), make("span", null, clean(m.title))); c.append(t); }
+      c.append(make("p", "card-body", clean(m.msg)), make("p", "card-name", nameOf(m)));
+      $("grid").append(c);
+    });
+
+    // --- やらかし予想
+    const oops = items.filter((m) => clean(m.oops));
+    if (oops.length) {
+      $("oopsSec").hidden = false;
+      oops.forEach((m) => {
+        const o = make("article", "oop reveal");
+        const ic = make("span", "oop-icon"); ic.append(icon(Math.random() < .5 ? "i-spark" : "i-flake"));
+        const t = make("div"); const p = make("p", null, clean(m.oops)); p.append(make("small", null, "予想：" + nameOf(m))); t.append(p);
+        o.append(ic, t); $("oops").append(o);
+      });
+    }
+
+    // --- 名前の花束
+    const palette = ["#fff6ea", "#ffd2a3", "#c9e9f2", "#ddd3f5", "#f6e2c4"];
+    const names = [...new Set(items.map(nameOf))];
+    const rnd = (a, b) => a + Math.random() * (b - a);
+    names.forEach((n, i) => {
+      const w = make("span", "bq-name"); const inner = make("span", null, n);
+      w.style.fontSize = rnd(.8, 1.15).toFixed(2) + "rem";
+      w.style.color = palette[i % palette.length];
+      w.style.setProperty("--o", rnd(.7, 1).toFixed(2));
+      inner.style.setProperty("--d", rnd(5, 9).toFixed(1) + "s");
+      inner.style.setProperty("--dl", (-rnd(0, 8)).toFixed(1) + "s");
+      inner.style.setProperty("--x", rnd(2, 7).toFixed(1) + "px");
+      inner.style.setProperty("--y", rnd(3, 8).toFixed(1) + "px");
+      inner.style.setProperty("--r", rnd(-3, 3).toFixed(1) + "deg");
+      w.append(inner); $("bouquet").append(w);
+    });
+
+    // --- 人数カウント
+    $("count").textContent = "0";
+    function countUp() {
+      const target = items.length;
+      if (reduced) { $("count").textContent = target; return; }
+      const start = performance.now(), dur = 1400;
+      (function tick(now) {
+        const p = Math.min((now - start) / dur, 1);
+        $("count").textContent = Math.round(target * (1 - Math.pow(1 - p, 3)));
+        if (p < 1) requestAnimationFrame(tick);
+      })(start);
+    }
+
+    // --- スクロールで表示
+    const io = "IntersectionObserver" in window ? new IntersectionObserver((es) => es.forEach((e) => {
+      if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
+    }), { threshold: .12, rootMargin: "0px 0px -30px 0px" }) : null;
+
+    // --- 封筒を開く
+    let opened = false;
+    $("openBtn").addEventListener("click", () => {
+      if (opened) return; opened = true;
+      const env = $("env"), op = $("opening");
+      const step = reduced ? 0 : 1;
+      op.classList.add("opening-now");
+      env.classList.add("s1");
+      setTimeout(() => env.classList.add("s2"), 380 * step);
+      setTimeout(() => env.classList.add("s3"), 900 * step);
+      setTimeout(() => {
+        op.classList.add("done");
+        document.body.classList.remove("locked");
+        countUp();
+        document.querySelectorAll(".bq-name").forEach((n, i) => setTimeout(() => n.classList.add("show"), reduced ? 0 : 500 + i * 60));
+        document.querySelectorAll(".reveal").forEach((r) => io ? io.observe(r) : r.classList.add("in"));
+      }, 2000 * step);
+    });
+
+    // --- 星のきらめき
+    (() => {
+      const cv = $("sky"), ctx = cv.getContext("2d"); if (!ctx) return;
+      let W = 0, H = 0, pts = [];
+      function resize() {
+        const dpr = Math.min(devicePixelRatio || 1, 2); W = innerWidth; H = innerHeight;
+        cv.width = W * dpr; cv.height = H * dpr; cv.style.width = W + "px"; cv.style.height = H + "px"; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        pts = Array.from({ length: Math.min(80, Math.floor(W / 5)) }, () => ({ x: Math.random() * W, y: Math.random() * H, r: Math.random() * 1.6 + .3, p: Math.random() * 6.28, s: Math.random() * .9 + .3, v: Math.random() * .12 + .03, warm: Math.random() < .55 }));
+        if (reduced) draw(performance.now(), true);
+      }
+      function draw(now, once) {
+        ctx.clearRect(0, 0, W, H); const t = now * .001;
+        for (const a of pts) {
+          if (!once) { a.y += a.v; if (a.y > H + 4) { a.y = -4; a.x = Math.random() * W; } }
+          const g = .3 + .7 * (.5 + .5 * Math.sin(t * a.s + a.p));
+          ctx.beginPath(); ctx.arc(a.x, a.y, a.r, 0, 6.283);
+          ctx.fillStyle = a.warm ? `rgba(255,222,170,${g * .8})` : `rgba(205,232,255,${g * .7})`;
+          ctx.shadowBlur = a.r > 1.1 ? 8 : 0; ctx.shadowColor = a.warm ? "#ffd59a" : "#c4ecff"; ctx.fill();
+        }
+        ctx.shadowBlur = 0; if (!once) requestAnimationFrame(draw);
+      }
+      addEventListener("resize", resize, { passive: true }); resize();
+      if (!reduced) requestAnimationFrame(draw);
+    })();
+  </script>
+</body>
+</html>
