@@ -43,6 +43,8 @@
     #sky { position: fixed; inset: 0; z-index: 1; pointer-events: none; }
     main, footer { position: relative; z-index: 2; }
 
+
+
     /* ---------- Opening ---------- */
     .opening { position: fixed; inset: 0; z-index: 20; display: grid; place-items: center; padding: 24px 16px;
       background: radial-gradient(ellipse at 50% 45%, #1a3058, #050c1a 75%); transition: opacity 1s ease, visibility 1s; }
@@ -102,6 +104,67 @@
     .scroll-cue::after { content: ""; display: block; width: 1px; height: 22px; margin: 8px auto 0; background: linear-gradient(var(--gold), transparent); animation: cue 2.4s ease-in-out infinite; transform-origin: top; }
     @keyframes cue { 0% { transform: scaleY(0); } 50% { transform: scaleY(1); } 100% { transform: scaleY(1); opacity: 0; } }
 
+    /* ---------- Gather (shared) ---------- */
+    .gather { position: relative; width: min(100% - 32px, 560px); margin: 0 auto; padding: 24px 0 40px; }
+    .g-head { text-align: center; margin-bottom: 18px; }
+    .g-head h2 { margin: 10px 0 6px; font-size: clamp(1.35rem, 5.6vw, 1.8rem); letter-spacing: .06em; color: #fff4e3; }
+    .g-head p { margin: 0; font-size: .8rem; color: rgba(220,233,245,.66); }
+    .roster { list-style: none; margin: 18px 0 0; padding: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 7px; }
+    .roster li { display: inline-flex; align-items: center; gap: 6px; padding: 5px 11px; border-radius: 999px; font-size: .78rem; color: #f3ead9;
+      background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.12); animation: pop .5s var(--ease) both; }
+    .roster li::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: #ff9f43; box-shadow: 0 0 8px #ffb15e; flex: none; }
+    @keyframes pop { from { opacity: 0; transform: scale(.6); } to { opacity: 1; transform: none; } }
+    .g-status { margin: 14px 0 0; text-align: center; font-size: .86rem; color: #f2e4d2; letter-spacing: .04em; min-height: 1.5em; transition: color .4s; }
+    .g-status.done { color: #ffd49a; font-weight: 700; }
+    .flyer { position: absolute; left: 0; top: 0; white-space: nowrap; font-size: .98rem; font-weight: 700; pointer-events: none; z-index: 3; }
+    @media print { .flyer { display: none !important; } .roster li { color: #26364a !important; background: #f6efe3 !important; border-color: #e6dccd !important; animation: none !important; } .g-head h2, .g-status { color: #26364a !important; } }
+    .furnace { --heat: 0; }
+    .furnace::before { content: ""; position: absolute; left: 50%; top: 40%; width: 620px; height: 520px; transform: translate(-50%,-50%); border-radius: 50%; pointer-events: none;
+      background: radial-gradient(ellipse, rgba(255,140,50,.45), rgba(255,110,40,.12) 45%, transparent 70%); opacity: calc(.15 + var(--heat) * .85); transition: opacity .4s; z-index: -1; }
+    .temp { display: flex; justify-content: center; margin-bottom: 4px; }
+    .temp-pill { display: inline-flex; align-items: center; gap: 8px; padding: 6px 16px; border-radius: 12px; font-weight: 700; font-size: 1.05rem; letter-spacing: .02em; color: #fff;
+      background: linear-gradient(180deg, #6ab8ff, #3a7fe0); box-shadow: inset 0 -3px rgba(0,0,0,.18), 0 6px 16px rgba(0,0,0,.3); transition: background .6s; font-variant-numeric: tabular-nums; }
+    .temp-pill.warm { background: linear-gradient(180deg, #ffb35a, #ef7a2c); }
+    .temp-pill svg { width: 16px; height: 16px; }
+    .furnace-stage { position: relative; height: 300px; }
+    .furnace-stage svg.fz { position: absolute; left: 50%; bottom: 0; width: 230px; height: 290px; transform: translateX(-50%); overflow: visible; }
+    .fl { transform-box: fill-box; transform-origin: 50% 100%; transition: transform .45s var(--ease); }
+    .fl-wrap { transform-box: fill-box; transform-origin: 50% 100%; transform: scale(calc(.25 + var(--heat) * .95)); transition: transform .5s var(--ease); }
+    .flyer.fname { color: #ffe2b8; text-shadow: 0 0 10px rgba(255,150,60,.9), 0 0 2px #000; }
+
+    .furnace { padding-top: 40px; }
+    .furnace-stage { height: 340px; }
+    #sparks { position: absolute; left: 50%; top: -60px; width: 420px; height: 420px; transform: translateX(-50%); pointer-events: none; z-index: 2; }
+    .furnace-stage svg.fz { z-index: 1; }
+    .flyer.fname { z-index: 3; }
+    .temp-pill { transition: background .6s, box-shadow .2s; }
+    .temp-pill.flash { box-shadow: 0 0 0 4px rgba(255,210,140,.35), 0 6px 22px rgba(255,150,60,.6); }
+    @media print { #sparks { display: none !important; } }
+
+    /* ---------- Orange titles ---------- */
+    .orchard-wrap { position: relative; margin: 0 -16px; }
+    .orchard { display: flex; gap: 14px; overflow-x: auto; overflow-y: hidden; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;
+      padding: 22px calc(50% - 66px) 26px; scrollbar-width: none;
+      -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent); mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent); }
+    .orchard::-webkit-scrollbar { display: none; }
+    .orange { position: relative; flex: none; width: 132px; height: 132px; scroll-snap-align: center; display: grid; place-items: center; text-align: center; padding: 20px 16px 14px; border-radius: 50%;
+      background: radial-gradient(circle at 50% 54%, #fff1d6 0, #ffd590 34%, #ffa733 68%, #f28a12 86%, #e06f08 100%);
+      box-shadow: inset -6px -8px 14px rgba(170,70,0,.35), inset 4px 6px 10px rgba(255,236,200,.5), 0 10px 22px rgba(0,0,0,.32);
+      color: #4a2205; font-weight: 700; font-size: .86rem; text-shadow: 0 1px 0 rgba(255,240,215,.6); line-height: 1.45; letter-spacing: .02em; white-space: pre-line; word-break: keep-all; overflow-wrap: anywhere;
+      transform: rotate(var(--rot, 0deg)); animation: bob var(--bd, 5s) ease-in-out var(--bdl, 0s) infinite alternate; }
+    .orange::before { content: ""; position: absolute; inset: 0; border-radius: 50%; pointer-events: none;
+      background-image: radial-gradient(rgba(214,130,50,.28) 1px, transparent 1.6px); background-size: 10px 10px; opacity: .55; }
+    .orange::after { content: ""; position: absolute; top: -8px; left: 50%; width: 28px; height: 14px; border-radius: 0 100% 0 100%; transform: rotate(-18deg);
+      background: linear-gradient(135deg, #79c95a, #3a9433); box-shadow: inset 0 -2px rgba(0,0,0,.12); }
+    .orange.lg { width: 144px; height: 144px; font-size: .82rem; }
+    .orange span { position: relative; z-index: 1; }
+    @keyframes bob { from { transform: rotate(var(--rot, 0deg)) translateY(-3px); } to { transform: rotate(calc(var(--rot, 0deg) * -1)) translateY(3px); } }
+    .swipe-hint { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 2px; font-size: .72rem; letter-spacing: .1em; color: rgba(255,226,184,.7); }
+    .swipe-hint i { display: block; width: 26px; height: 1px; background: currentColor; position: relative; animation: nudge 1.8s ease-in-out infinite; }
+    .swipe-hint i::after { content: ""; position: absolute; right: 0; top: -3px; width: 6px; height: 6px; border-top: 1px solid currentColor; border-right: 1px solid currentColor; transform: rotate(45deg); }
+    @keyframes nudge { 50% { transform: translateX(6px); } }
+    @media print { .orchard { flex-wrap: wrap; justify-content: center; overflow: visible; padding: 10px 0; -webkit-mask-image: none; mask-image: none; } .orange { animation: none !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; } .swipe-hint { display: none; } }
+
     /* ---------- Sections ---------- */
     .section { width: min(100% - 32px, 860px); margin: 0 auto; padding: 72px 0 70px; }
     .sec-head { text-align: center; margin-bottom: 28px; }
@@ -152,6 +215,43 @@
     .ending p { margin: 0 auto; max-width: 24em; color: #e9e0d4; font-family: "Kaisei Decol", serif; font-size: .92rem; line-height: 2.1; text-wrap: balance; }
     footer { padding: 22px 16px 34px; text-align: center; color: rgba(212,223,235,.5); font-size: .68rem; letter-spacing: .18em; border-top: 1px solid rgba(204,225,241,.06); }
 
+
+    /* ---------- Save ---------- */
+    .save { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 40px; }
+    .save button { display: inline-flex; align-items: center; gap: 8px; padding: 12px 20px; border-radius: 999px; cursor: pointer; font: inherit; font-size: .82rem; font-weight: 700; letter-spacing: .06em;
+      color: #fff3e1; border: 1px solid rgba(232,195,143,.5); background: linear-gradient(135deg, rgba(255,210,163,.16), rgba(221,211,245,.08)); transition: background .3s, transform .2s; -webkit-tap-highlight-color: transparent; }
+    .save button:active { transform: scale(.97); }
+    .save button svg { color: var(--gold); font-size: 16px; }
+    .save-note { margin-top: 12px !important; font-family: "Zen Maru Gothic", sans-serif !important; font-size: .7rem !important; color: rgba(220,233,245,.55) !important; }
+
+    @media print {
+      @page { margin: 14mm; }
+      html, body { background: #fff !important; color: #26364a !important; height: auto !important; overflow: visible !important; }
+      .opening, #sky, .aurora, .scroll-cue, .save, .save-note, .fire, .bouquet::before { display: none !important; }
+      .hero { min-height: 0; padding: 10px 0 20px; }
+      h1, .hero-copy, .sec-head h2, .ending h2, .ending p, .count-wrap { color: #26364a !important; text-shadow: none !important; }
+      .state, .count, .ornament, .sec-icon, .card-name { color: #a06a35 !important; }
+      .sec-head p { color: #5d6b7a !important; }
+      .reveal, .bq-name { opacity: 1 !important; transform: none !important; }
+      .bq-name { color: #6b4a2b !important; text-shadow: none !important; }
+      .bq-name > span { animation: none !important; }
+      .title-badge { color: #6b4a2b !important; background: #fbf1e3 !important; }
+      .oop { background: #f5f8fb !important; border-color: #dbe4ec !important; }
+      .oop p { color: #26364a !important; } .oop small { color: #a06a35 !important; }
+      .oop-icon { color: #6c8fa3 !important; }
+      .card { box-shadow: none !important; border: 1px solid #e6dccd; }
+      .card, .oop, .sec-head { break-inside: avoid; }
+      .sec-head { break-after: avoid; margin-bottom: 14px; }
+      .grid, .oops { display: block !important; }
+      .card, .oop { margin: 0 0 10px; }
+      .section, main, .hero, .ending { position: static !important; }
+      #titlesSec { padding-top: 0; }
+      .section { padding: 24px 0; width: 100%; }
+      .ending { padding: 30px 0; border: 0; }
+      footer { color: #8a96a3 !important; }
+      * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    }
+
     @media (min-width: 640px) {
       .grid { grid-template-columns: repeat(2, minmax(0,1fr)); gap: 18px; }
       .oops { grid-template-columns: repeat(2, minmax(0,1fr)); }
@@ -176,6 +276,8 @@
       <symbol id="i-crown" viewBox="0 0 24 24"><path d="M4 17.5 3 8l5 4 4-6.5 4 6.5 5-4-1 9.5Z"/><path d="M5 20.5h14"/></symbol>
       <symbol id="i-letter" viewBox="0 0 24 24"><rect x="3" y="5.5" width="18" height="13" rx="1.6"/><path d="m3.6 6.5 8.4 6.6 8.4-6.6"/></symbol>
       <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 3c.6 4.4 2.6 6.4 7 7-4.4.6-6.4 2.6-7 7-.6-4.4-2.6-6.4-7-7 4.4-.6 6.4-2.6 7-7Z"/><path d="M19 16.5c.25 1.6.9 2.25 2.5 2.5-1.6.25-2.25.9-2.5 2.5-.25-1.6-.9-2.25-2.5-2.5 1.6-.25 2.25-.9 2.5-2.5Z"/></symbol>
+      <symbol id="i-down" viewBox="0 0 24 24"><path d="M12 4v11m-4.5-4.5L12 15l4.5-4.5"/><path d="M5 19.5h14"/></symbol>
+      <symbol id="i-doc" viewBox="0 0 24 24"><path d="M7 3.5h7l4 4v13H7z"/><path d="M14 3.5v4h4M9.5 12.5h6M9.5 16h6"/></symbol>
       <symbol id="i-orbit" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.2"/><path d="M4.5 15.5c-1.6-3.2 1.7-7.7 7.3-10s10.3-1.2 11 1.7"/><path d="M19.5 8.5c1.6 3.2-1.7 7.7-7.3 10S1.9 19.7 1.2 16.8"/></symbol>
     </defs>
   </svg>
@@ -228,11 +330,40 @@
         <h1>Miiさんへ</h1>
         <div class="ornament" aria-hidden="true"><svg class="icon"><use href="#i-flake"/></svg></div>
         <p class="hero-copy"><span class="nw">長いあいだ、</span><span class="nw">この雪原を守ってくれて</span><span class="nw">ありがとう。</span><br><span class="nw">離れても、私たちは</span><span class="nw">同じ空の下の仲間です。</span></p>
-        <p class="count-wrap"><span class="count" id="count">0</span>人の仲間から</p>
-        <div class="bouquet" id="bouquet" aria-label="寄せ書きをした仲間の名前"></div>
       </div>
       <div class="scroll-cue" aria-hidden="true">SCROLL</div>
     </header>
+
+    <section class="gather furnace" id="gather">
+      <div class="temp"><span class="temp-pill" id="temp"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M10 14V5a2 2 0 1 1 4 0v9a4 4 0 1 1-4 0Z"/></svg><span id="tval">-38.6℃</span></span></div>
+      <div class="furnace-stage" id="stage">
+        <canvas id="sparks" aria-hidden="true"></canvas>
+        <svg class="fz" viewBox="0 0 230 290" aria-hidden="true">
+          <defs>
+            <linearGradient id="stn" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#3b4258"/><stop offset=".5" stop-color="#5a6380"/><stop offset="1" stop-color="#323850"/></linearGradient>
+            <linearGradient id="fo2" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#e2531d"/><stop offset=".6" stop-color="#f88a2f"/><stop offset="1" stop-color="#ffb35c" stop-opacity=".15"/></linearGradient>
+            <linearGradient id="fm2" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#ff9a3a"/><stop offset="1" stop-color="#ffd27d" stop-opacity=".35"/></linearGradient>
+            <linearGradient id="fi2" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#fff3c9"/><stop offset="1" stop-color="#ffe29a" stop-opacity=".4"/></linearGradient>
+            <radialGradient id="mouth" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#ffd27a"/><stop offset="1" stop-color="#c2410c"/></radialGradient>
+          </defs>
+          <g class="fl-wrap">
+            <path class="fl f1" fill="url(#fo2)" d="M115 10C127 48 160 66 156 112c-3 30-19 50-41 50s-38-20-41-50c-3-28 12-41 17-58 8 17 17 20 17 20C108 56 100 34 115 10Z"/>
+            <path class="fl f2" fill="url(#fm2)" d="M115 56c9 22 28 36 25 64-2 20-12 36-25 36s-23-16-25-36c-2-17 8-28 13-40 4 11 10 14 10 14 0-14-4-25 2-38Z"/>
+            <path class="fl f3" fill="url(#fi2)" d="M115 98c6 13 15 21 14 38-1 11-7 20-14 20s-13-9-14-20c-1-14 8-22 14-38Z"/>
+          </g>
+          <ellipse cx="115" cy="166" rx="58" ry="12" fill="url(#mouth)" opacity=".9"/>
+          <path d="M57 166 L47 272 Q115 290 183 272 L173 166 Q115 180 57 166Z" fill="url(#stn)"/>
+          <g stroke="#262b3d" stroke-width="2" opacity=".7" fill="none">
+            <path d="M54 196 Q115 210 176 196"/><path d="M51 226 Q115 240 179 226"/><path d="M49 254 Q115 268 181 254"/>
+            <path d="M85 172 v26 M140 174 v24 M70 200 v28 M115 205 v30 M158 200 v28 M92 232 v24 M138 232 v24"/>
+          </g>
+          <rect x="95" y="228" width="40" height="34" rx="18" fill="#1a1d2b"/>
+          <rect x="99" y="234" width="32" height="28" rx="14" fill="url(#mouth)" class="door"/>
+          <ellipse cx="115" cy="166" rx="62" ry="14" fill="none" stroke="#6d7696" stroke-width="5"/>
+        </svg>
+      </div>
+      <p class="g-status" id="status"></p>
+    </section>
 
     <section class="section" id="titlesSec" hidden>
       <div class="sec-head reveal">
@@ -240,7 +371,7 @@
         <h2>二つ名コレクション</h2>
         <p>みんなが勝手につけた、Miiさんの称号。</p>
       </div>
-      <div class="titles reveal" id="titles"></div>
+      <div class="orchard-wrap reveal"><div class="orchard" id="titles"></div><p class="swipe-hint">スワイプ<i></i></p></div>
     </section>
 
     <section class="section">
@@ -282,6 +413,11 @@
       </div>
       <h2>いってらっしゃい、Miiさん</h2>
       <p><span class="nw">あなたがいた雪原は、</span><span class="nw">これからも私たちの帰る場所です。</span></p>
+      <div class="save">
+        <button type="button" id="saveHtml"><svg class="icon"><use href="#i-down"/></svg>この手紙を保存</button>
+        <button type="button" id="savePdf"><svg class="icon"><use href="#i-doc"/></svg>PDFで保存</button>
+      </div>
+      <p class="save-note">保存したファイルは、ネットにつながっていなくても開けます</p>
     </section>
   </main>
   <footer>Whiteout Survival の仲間一同より</footer>
@@ -290,12 +426,180 @@
     // ===== メッセージデータ（ここを差し替え） =====
     // msg は必須。title / oops は空欄ならその人の項目を表示しません。
     const MESSAGES = [
-      { name: "雪原のミカン", msg: "Miiさん、今まで本当にありがとう！\n困ったときにいつも助けてくれて、何度も心強かったです。新しいサーバーでも元気でね！", title: "雪原の頼れる太陽", oops: "新しい同盟でも、気づいたらみんなの相談役になってそう！" },
-      { name: "Kuma隊長", msg: "一緒に戦ったイベントも、何気ないチャットも大切な思い出です。\nMiiさんの新しい冒険に、たくさんの幸運がありますように。", title: "同盟を照らす灯台", oops: "移民先でも張り切りすぎて、初日からイベントの作戦会議を始める。" },
-      { name: "しろくまパン", msg: "長いあいだサーバーを支えてくれてありがとう！\n離れても仲間なのは変わらないよ。また遊びに来てね", title: "みかんの守護神", oops: "挨拶のつもりでチャットしたら、気づけば同盟のみんなと大盛り上がり。" },
-      { name: "Nagi", msg: "Miiさんと過ごせてよかった！\n新天地でも無理せず、Miiさんらしく楽しんでね。いつでも応援してます。", title: "雪原のムードメーカー", oops: "" },
-      { name: "灯火", msg: "たくさん助けてもらった分、これからは新しい仲間と楽しい時間を作ってね。\nまたどこかの雪原で会おう！", title: "", oops: "お礼を言いに行ったはずが、いつの間にか作戦を手伝っている。" },
-      { name: "ぽかぽか鍋", msg: "今まで本当にありがとう。\nMiiさんの優しさと笑顔は、ずっとこのサーバーの宝物です！いってらっしゃい！", title: "永遠のオレンジ隊長", oops: "新サーバーでもみかんを見つけて、同盟の合言葉にしちゃいそう。" }
+      {
+        "name": "ぶー",
+        "msg": "早く帰ってきてね",
+        "title": "オレンジの悪魔",
+        "oops": ""
+      },
+      {
+        "name": "テンペスト@",
+        "msg": "仲間想いの優しいMiiさんsvs.兵器戦などなどありがとう〜😁移民先でも活躍されると思いますが、イベントで当たったら手加減して下さい^_^\n寂しくなりますが、これからもお身体に気をつけてwos楽しんで下さい☺️",
+        "title": "伝説の🍊",
+        "oops": "🐻の時間を間違える…やって欲しいww"
+      },
+      {
+        "name": "ゴマちゃん",
+        "msg": "🍊み🍊か🍊ん🍊さ🍊ん🍊、🍊ま🍊た🍊戻🍊っ🍊て🍊来🍊て🍊ね🍊😭",
+        "title": "yYZの救世主、知的なみかん",
+        "oops": "SVSで寝落ち"
+      },
+      {
+        "name": "빈 빈",
+        "msg": "🍊ともっと仲良くなりたかったのに移民するの悲しいですよ😢そこには可愛い韓国人がいないけど元気にしてください！！次会う時は何も秘密にしないでください　┏〇゛✨",
+        "title": "内緒のクイーン",
+        "oops": "移民先を間違えた！！！！！"
+      },
+      {
+        "name": "みぃちゃん",
+        "msg": "移民してきてyYzに加入した時に名前が同じだったのでそれについて触れてくださったのが思い出です✨️\nあまりお話させていただく機会はなかったですが、勝手に憧れていました☺️\n移民されるのは淋しいですが、Miiさんのペースで移民先でも楽しく遊んでください😊",
+        "title": "1998の女帝😎💓",
+        "oops": "誰かがボケをかまして、冷静にツッコミかましそうです！笑"
+      },
+      {
+        "name": "ミラクル",
+        "msg": "移民してきた時温かく迎えてくれてありがとうございます🙇‍♀️\nMiiさんにはおんぶにだっこ状態でしながすごく楽しくホワサバを続ける事ができました😊\n移民先でもいままで通り無双状態のMiiさんでいてください😊\n今までありがとうございました☺️\nすごく寂しいですけど移民先でも楽しんでくださいね😭",
+        "title": "最強ミカン ホワサバの女王様",
+        "oops": "Mii様にやらかしはないと信じてます😂"
+      },
+      {
+        "name": "Bow",
+        "msg": "みーさん♡\n当初から大変お世話になりました💓💓\nムードメーカーのみーさんが居なくなるのは寂しいです😔\nいつかまた戻ってきてくれたら嬉しいです☺️\n長い間一緒にホワサバできて楽しかったです🙈💓",
+        "title": "生ける伝説",
+        "oops": ""
+      },
+      {
+        "name": "pooh",
+        "msg": "今までyYZを盛り上げて頂きありがとうございました！Miiさんが移民されると聞きとても寂しい気持ちですが、同じ同盟で仲間になれてよかったです☺️中々絡みはなかったですがMiiさんはyYZには欠かせない大切な大切な仲間なのでまた一緒に遊べたら嬉しいなと思います😆",
+        "title": "",
+        "oops": ""
+      },
+      {
+        "name": "塩焼き",
+        "msg": "fokが移民したときに最初に遊びにきてくれたの嬉しかった🙆‍♀️",
+        "title": "真っ直ぐ",
+        "oops": "季節イベでブチ切れる"
+      },
+      {
+        "name": "茄兵衛",
+        "msg": "🍊様、色々とお相手頂きありがとう御座いました😊\nゲーム内では🍊様は雲の上の存在でしたが、私にとっては柚ちゃんが身近な存在で、勝手にライバル視し楽しんでいました。移民し、身近で無くなるのは寂しいですが、ゲームでもプライベートでも🍊様にとって豊かな時間を過ごされる事を願っていますね。",
+        "title": "Yuu.Suu.Iii",
+        "oops": "オンライン睡眠💤"
+      },
+      {
+        "name": "めんだこやーん(すだち)",
+        "msg": "Miiさんらーーーぶ!!!　新しい鯖でも楽しめますよーに😘",
+        "title": "伝説の🍊",
+        "oops": ""
+      },
+      {
+        "name": "ソロの人",
+        "msg": "solに遊びにきてくれて本当にありがとうございましたっ🙇‍♀️みかん🍊ブームいまだに残ってます…笑　お話しさせてもらったのはかなり後の方だったからもっと早くから声かけたらよかったと思ってます😭移民した後も何あったら遠慮せずご連絡ください。うちに遊びにきたことがある人はもうソロ民ですからね、いつでも帰る席は用意しておりますので🍊♡あと喧嘩の助っ人必要なら連絡ください。ババア送るから乗って！の比じゃないもっとすごいやつ多分出ます笑　Miiさん改めて仲良くしてくれてありがとうございました♡",
+        "title": "名誉🍊",
+        "oops": ""
+      },
+      {
+        "name": "まめしば",
+        "msg": "SVSで同盟が襲われてる時に助けに来てくれてありがとうございました✨\n移民先でも良い仲間と出会えますように🙏✨",
+        "title": "",
+        "oops": ""
+      },
+      {
+        "name": "ふろσ´ω`و",
+        "msg": "クマ狩りʕ•ᴥ•ʔ参加の時はいつもMiiさんに乗れるかの挑戦をしていて、初めて乗れたときはすごく嬉しかったです。チャット上でも人見知りを発揮していて会話という会話はしていませんが、一緒の同盟で楽しかったです。ありがとうございました😄移民先でも楽しんでください。",
+        "title": "",
+        "oops": ""
+      },
+      {
+        "name": "さくらラテᴷʲʳᰔ",
+        "msg": "🍊姉様✨️(*｣´□`)｣大好きぃぃ💕\n超有名な大物が、同盟に遊びに来てくれて、いつも明るくて、サッパリしてて、優しい気遣い人の姉様が大好きになりました😆︎‪💖\n移民めちゃ悲しい🥲ですが、ずっと応援してます🔥🌸",
+        "title": "みんなの姉御",
+        "oops": "服着忘れて単凸（でも取れちゃう👏）"
+      },
+      {
+        "name": "えんじゅ",
+        "msg": "偶数奇数王城では最後まで白熱した戦いをありがとうございました♪少し寂しいですが、これからもゲームを楽しんでくださいね",
+        "title": "MAPPAのMii",
+        "oops": "砲台後ろの都市に単騎凸"
+      },
+      {
+        "name": "M4K070",
+        "msg": "Mii😊1年半yYZで一緒に出来て楽しかったぞ✨️\n色々な事を上手く運ぶことが出来なかったことがホントに申し訳ない😭\n🍓と🍉はyYZで預かっておく(人質w)から安心しといて✋\nまぁ、また東京で集結した時にwww\nひとまずお疲れ様でした🍵",
+        "title": "超合金🍊",
+        "oops": "クマ罠寝坊...からのdiscordで呼び出しw"
+      },
+      {
+        "name": "マサシ　DE    かっぱっぱ",
+        "msg": "短い間でしたが、圧倒的な存在感でした。ありがとうございました！新しい鯖でも楽しんでください！😊",
+        "title": "",
+        "oops": ""
+      },
+      {
+        "name": "kojiro",
+        "msg": "これまで1998を支えてくれてありがとうございました！いつでも戻ってきてください！",
+        "title": "1998の四皇",
+        "oops": ""
+      },
+      {
+        "name": "ダミエ",
+        "msg": "Miiさん、これまで本当にお疲れ様でした＆ありがとうございました！\n私のような無課金の末席から見ると、Miiさんはまさに「みんなの星」のような雲の上の存在でした。熊の集結が一瞬で埋まるのを眺めつつ、たまに乗れた時は密かにガッツポーズしていたのが良い思い出です。\n\n砦や争奪戦でも「Miiさんが来れば大丈夫」という圧倒的な安心感があり、強さだけでなく戦況を細かく見渡す緻密な立ち回りには、遠くからただただ圧倒されていました。\n移民してきた私たちをyYzで温かく受け入れて、同盟も1998も力強く引っ張ってくださったこと、本当に感謝しています。\n\n次はさらに猛者たちが集まる場所へ行かれると聞きました。あんなに雲の上だったMiiさんが、新しい環境でどんな戦いを見せるのかワクワクします。新天地でも持ち前の強さとリーダーシップで暴れてきてください！ずっと応援しています！",
+        "title": "1998が誇る最強の大黒柱",
+        "oops": "「上がいる環境最高！」とウキウキで加速とダイヤを全溶かしした結果、結局そこでもトップ争いに巻き込まれて「話が違う…」と頭を抱える"
+      },
+      {
+        "name": "teddy@sol",
+        "msg": "みーさん\nいつも 明るく 楽しく 頼もしく\nsolに遊びに来てくれた時も仲良くしていただいて、ありがとうございました。\nガチ鯖で疲れたら帰ってきてくださいね。\n待ってますよ (*´³`*) ㄘゅ💕",
+        "title": "1998の姉御",
+        "oops": "最初のクマを寝ぶっち"
+      },
+      {
+        "name": "＊ruru＊",
+        "msg": "短い間ではありましたが、たいへんお世話になりました！\n人見知りすぎてなかなかお話する機会がなかったですが…\nMiiさんが居てくれるだけでとても心強かったです！！\n本当にありがとうございました🙇‍♀️",
+        "title": "",
+        "oops": ""
+      },
+      {
+        "name": "ゆきやま",
+        "msg": "今まで大変お世話になりました😭噂によるとつえーやつを求めて移民されるとのこと。天下取ってください！応援してます🎌",
+        "title": "明け方のBBQマスター",
+        "oops": ""
+      },
+      {
+        "name": "MxM一同",
+        "msg": "MxMは、移民してきたばかりで、あまり長い時間をご一緒できなかったのが残念です🥲\n\nそれでも、一緒にSVSに参加させていただいて、Miiさんの優しい言葉や、みなさんとの温かいやり取りを見たりする中で、本当にたくさんの方から愛されている方なんだなぁと感じていました🍊✨\n\n短い間でしたが、同じサーバーで過ごせてとっても嬉しかったです！\n\nまたいつかご縁があれば、ぜひMxMのみんなとも一緒に遊んでもらえたら嬉しいです🎵\n\n新しいサーバーでも、Miiさんらしく、楽しい時間を過ごせますように✨\n\nこれからのご活躍も応援しています！\nどうかお元気で🌸",
+        "title": "",
+        "oops": ""
+      },
+      {
+        "name": "りあるまま",
+        "msg": "全く闘いに出てなかったですが、ありがとうございました🥰",
+        "title": "",
+        "oops": ""
+      },
+      {
+        "name": "原点回帰シンプルぽんちゃん",
+        "msg": "ずいぶん前にMiiサブで御指導いただいたことを今でも覚えています。出来ることなら1度Miiさんに会ってみたかった(特に意味はないけど)",
+        "title": "冷凍みかん",
+        "oops": "Miiさんは誰かを燃やしたり何もしないと信じています！"
+      },
+      {
+        "name": "あんとん",
+        "msg": "xyyに遊びに来てくれた時に、深夜の夜襲がLv4ステ思い出〜!!Miiさんの深夜警備隊がまじかっこよかったです✨",
+        "title": "みんな大好きMiiさん！",
+        "oops": "すべり倒しのMiiさんw"
+      },
+      {
+        "name": "根性なし",
+        "msg": "日頃の感謝を込めて🎁\nおみぃ「どこ行っても一緒」なんて言ったけど\n凄く良かったら教えてねw",
+        "title": "根性無双",
+        "oops": "競技場で全員ぶっ叩く"
+      },
+      {
+        "name": "ひつまぶし",
+        "msg": "いつでも戻ってきてくださいね",
+        "title": "",
+        "oops": "男性と間違われて怖がられる笑"
+      }
     ];
 
     const $ = (id) => document.getElementById(id);
@@ -309,10 +613,23 @@
     const nameOf = (m) => clean(m.name) || "なかま";
 
     // --- 二つ名
-    const titled = items.filter((m) => clean(m.title));
+    const titled = items.filter((m, i, arr) => clean(m.title) && arr.findIndex((x) => clean(x.title) === clean(m.title)) === i);
     if (titled.length) {
       $("titlesSec").hidden = false;
-      titled.forEach((m) => { const b = make("span", "title-badge"); b.append(icon("i-crown"), make("span", null, clean(m.title))); $("titles").append(b); });
+      const TBR = {
+        "オレンジの悪魔": "オレンジの\n悪魔", "yYZの救世主、知的なみかん": "yYZの救世主、\n知的なみかん", "内緒のクイーン": "内緒の\nクイーン",
+        "1998の女帝😎💓": "1998の女帝\n😎💓", "最強ミカン ホワサバの女王様": "最強ミカン\nホワサバの\n女王様", "みんなの姉御": "みんなの\n姉御",
+        "MAPPAのMii": "MAPPAの\nMii", "1998の四皇": "1998の\n四皇", "1998が誇る最強の大黒柱": "1998が誇る\n最強の\n大黒柱", "1998の姉御": "1998の\n姉御",
+        "明け方のBBQマスター": "明け方の\nBBQマスター", "みんな大好きMiiさん！": "みんな大好き\nMiiさん！"
+      };
+      titled.forEach((m, i) => {
+        const t = clean(m.title), len = [...t].length;
+        const b = make("div", "orange" + (len >= 11 ? " lg" : ""));
+        b.style.setProperty("--rot", ((i % 2 ? 1 : -1) * (2 + (i * 7) % 5)) + "deg");
+        b.style.setProperty("--bd", (4 + (i * 13) % 30 / 10) + "s");
+        b.style.setProperty("--bdl", (-(i * 7) % 5) + "s");
+        b.append(make("span", null, TBR[t] || t)); $("titles").append(b);
+      });
     }
 
     // --- メッセージ
@@ -335,40 +652,101 @@
       });
     }
 
-    // --- 名前の花束
-    const palette = ["#fff6ea", "#ffd2a3", "#c9e9f2", "#ddd3f5", "#f6e2c4"];
-    const names = [...new Set(items.map(nameOf))];
-    const rnd = (a, b) => a + Math.random() * (b - a);
-    names.forEach((n, i) => {
-      const w = make("span", "bq-name"); const inner = make("span", null, n);
-      w.style.fontSize = rnd(.8, 1.15).toFixed(2) + "rem";
-      w.style.color = palette[i % palette.length];
-      w.style.setProperty("--o", rnd(.7, 1).toFixed(2));
-      inner.style.setProperty("--d", rnd(5, 9).toFixed(1) + "s");
-      inner.style.setProperty("--dl", (-rnd(0, 8)).toFixed(1) + "s");
-      inner.style.setProperty("--x", rnd(2, 7).toFixed(1) + "px");
-      inner.style.setProperty("--y", rnd(3, 8).toFixed(1) + "px");
-      inner.style.setProperty("--r", rnd(-3, 3).toFixed(1) + "deg");
-      w.append(inner); $("bouquet").append(w);
-    });
+    // --- 炉のきらめき
+    const Sp = (() => {
+      const cv = $("sparks"), ctx = cv.getContext && cv.getContext("2d"); if (!ctx) return { burst() {}, start() {}, heat() {} };
+      const S = 420, dpr = Math.min(devicePixelRatio || 1, 2); cv.width = S * dpr; cv.height = S * dpr; ctx.scale(dpr, dpr);
+      const mx = S / 2, my = 60 + 340 - 124 + 4;
+      const P = []; let heat = 0, running = false;
+      const add = (n, burst) => { for (let i = 0; i < n; i++) P.push({
+        x: mx + (Math.random() - .5) * (burst ? 60 : 90), y: my - Math.random() * 10,
+        vx: (Math.random() - .5) * (burst ? 2.6 : .8), vy: -(burst ? 2 + Math.random() * 3 : .6 + Math.random() * 1.4 + heat * 1.2),
+        life: 0, max: 60 + Math.random() * 70, r: .8 + Math.random() * (burst ? 2.4 : 1.8), star: Math.random() < .35 }); };
+      const stars = Array.from({ length: 26 }, () => ({ a: Math.random() * 6.28, d: 70 + Math.random() * 130, p: Math.random() * 6.28, s: .6 + Math.random() * 1.6, r: 2 + Math.random() * 4 }));
+      function star(x, y, r, al, col) { ctx.globalAlpha = al; ctx.fillStyle = col; ctx.beginPath();
+        ctx.moveTo(x, y - r); ctx.quadraticCurveTo(x, y, x + r, y); ctx.quadraticCurveTo(x, y, x, y + r); ctx.quadraticCurveTo(x, y, x - r, y); ctx.quadraticCurveTo(x, y, x, y - r); ctx.fill(); }
+      function tick(now) {
+        ctx.clearRect(0, 0, S, S); const t = now / 1000;
+        if (Math.random() < .25 + heat * .9) add(1 + Math.round(heat * 2));
+        ctx.globalCompositeOperation = "lighter";
+        for (const q of stars) {
+          const al = Math.max(0, Math.sin(t * q.s + q.p)) * (.15 + heat * .85);
+          if (al > .02) star(mx + Math.cos(q.a) * q.d, my - 70 + Math.sin(q.a) * q.d * .8, q.r * (1 + heat * .6), al, "#fff1cf");
+        }
+        for (let i = P.length - 1; i >= 0; i--) { const q = P[i]; q.life++; q.x += q.vx + Math.sin((q.life + i) * .08) * .3; q.y += q.vy; q.vy *= .992;
+          const k = 1 - q.life / q.max; if (k <= 0) { P.splice(i, 1); continue; }
+          if (q.star) star(q.x, q.y, q.r * 2.2 * k + 1, k, "#ffe7b0");
+          else { ctx.globalAlpha = k; ctx.fillStyle = k > .5 ? "#ffd27a" : "#ff8a3c"; ctx.beginPath(); ctx.arc(q.x, q.y, q.r * k + .4, 0, 6.283); ctx.fill(); } }
+        ctx.globalAlpha = 1; ctx.globalCompositeOperation = "source-over";
+        requestAnimationFrame(tick);
+      }
+      return { start() { if (running || reduced) return; running = true; requestAnimationFrame(tick); }, burst(h) { heat = h; add(16, true); }, heat(h) { heat = h; } };
+    })();
 
-    // --- 人数カウント
-    $("count").textContent = "0";
-    function countUp() {
-      const target = items.length;
-      if (reduced) { $("count").textContent = target; return; }
-      const start = performance.now(), dur = 1400;
-      (function tick(now) {
-        const p = Math.min((now - start) / dur, 1);
-        $("count").textContent = Math.round(target * (1 - Math.pow(1 - p, 3)));
-        if (p < 1) requestAnimationFrame(tick);
-      })(start);
+    // --- 溶鉱炉
+    const gNames = [...new Set(items.map(nameOf))];
+    const GT = gNames.length, T0 = -38.6, T1 = 20.0;
+    let gStarted = false, gDone = false, gCount = 0;
+    const gSec = $("gather");
+    function gSet(k) {
+      gSec.style.setProperty("--heat", k.toFixed(3));
+      const t = T0 + (T1 - T0) * k;
+      $("tval").textContent = (t > 0 ? "+" : "") + t.toFixed(1) + "℃";
+      $("temp").classList.toggle("warm", t > 0);
+    }
+    gSet(0);
+    function gArrive(n) {
+      gCount++;
+      gSet(gCount / GT); Sp.burst(gCount / GT);
+      const tp = $("temp"); tp.classList.add("flash"); setTimeout(() => tp.classList.remove("flash"), 220);
+      if (gCount === GT) gFinish();
+    }
+    function gFinish() {
+      gDone = true;
+      $("status").textContent = "仲間の想いで、雪原があたたかくなりました";
+      $("status").classList.add("done");
+    }
+    function gInstant() {
+      if (gDone) return; gStarted = true;
+      gCount = GT; gSet(1); gFinish(); Sp.heat(1); Sp.start();
+    }
+    function gStart() {
+      if (gStarted) return; gStarted = true;
+      if (reduced || !Element.prototype.animate) return gInstant();
+      Sp.start();
+      const st = $("stage"), W = st.clientWidth, H = st.clientHeight, mx = W / 2, my = H - 124;
+      gNames.forEach((n, i) => setTimeout(() => {
+        const f = make("span", "flyer fname", n); f.style.opacity = "0"; st.append(f);
+        const fw = f.offsetWidth, fh = f.offsetHeight;
+        const left = i % 2 === 0, side = left ? -1 : 1;
+        const P0 = [mx + side * (W * .42) - fw / 2, H + 10];
+        const P1 = [mx + side * (W * .40) - fw / 2, 10 + Math.random() * 40];
+        const P2 = [mx + side * 30 - fw / 2, -30 - Math.random() * 30];
+        const P3 = [mx - fw / 2, my];
+        const bz = (t, k) => { const u = 1 - t; return u*u*u*P0[k] + 3*u*u*t*P1[k] + 3*u*t*t*P2[k] + t*t*t*P3[k]; };
+        const frames = [];
+        for (let j = 0; j <= 48; j++) {
+          const t = j / 48, e = .5 - Math.cos(Math.PI * t) / 2;
+          const op = t < .12 ? t / .12 : t > .86 ? (1 - t) / .14 : 1;
+          const sc = t > .7 ? 1 - (t - .7) / .3 * .7 : 1;
+          frames.push({ transform: `translate(${bz(e, 0).toFixed(1)}px,${bz(e, 1).toFixed(1)}px) scale(${sc.toFixed(3)})`, opacity: op.toFixed(3), offset: t });
+        }
+        const a = f.animate(frames, { duration: 2700, easing: "linear", fill: "forwards" });
+        a.onfinish = () => { f.remove(); if (!gDone) gArrive(n); };
+      }, i * 560));
     }
 
     // --- スクロールで表示
     const io = "IntersectionObserver" in window ? new IntersectionObserver((es) => es.forEach((e) => {
       if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
     }), { threshold: .12, rootMargin: "0px 0px -30px 0px" }) : null;
+
+
+    function gObs() {
+      if (!("IntersectionObserver" in window)) return gStart();
+      const o = new IntersectionObserver((es) => { if (es.some((e) => e.isIntersecting)) { o.disconnect(); gStart(); } }, { threshold: .35 });
+      o.observe($("stage"));
+    }
 
     // --- 封筒を開く
     let opened = false;
@@ -383,11 +761,34 @@
       setTimeout(() => {
         op.classList.add("done");
         document.body.classList.remove("locked");
-        countUp();
-        document.querySelectorAll(".bq-name").forEach((n, i) => setTimeout(() => n.classList.add("show"), reduced ? 0 : 500 + i * 60));
+        gObs();
         document.querySelectorAll(".reveal").forEach((r) => io ? io.observe(r) : r.classList.add("in"));
       }, 2000 * step);
     });
+
+
+    // --- 保存
+    function showAll() {
+      document.querySelectorAll(".reveal").forEach((r) => r.classList.add("in"));
+      gInstant();
+    }
+    $("saveHtml").addEventListener("click", async () => {
+      try {
+        const res = await fetch(location.href.split("#")[0], { cache: "no-store" });
+        if (!res.ok) throw new Error();
+        const blob = new Blob([await res.text()], { type: "text/html" });
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(blob); a.download = "Miiさんへ_寄せ書き.html";
+        document.body.append(a); a.click(); a.remove();
+        setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+      } catch (e) {
+        alert("保存できませんでした。「PDFで保存」をお試しください。");
+      }
+    });
+    $("savePdf").addEventListener("click", () => { showAll(); setTimeout(() => window.print(), 150); });
+    addEventListener("beforeprint", showAll);
+
+
 
     // --- 星のきらめき
     (() => {
