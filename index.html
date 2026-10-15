@@ -34,7 +34,10 @@
       --ease: cubic-bezier(.22,.8,.24,1);
     }
     *, *::before, *::after { box-sizing: border-box; }
-    html { background: var(--night); }
+    html { background: var(--night); overflow-x: hidden; }
+    body { position: relative; overflow-x: hidden; }
+    main, footer { overflow-x: clip; }
+    .aurora-wrap { position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
     body {
       margin: 0; min-width: 320px; overflow-x: hidden; color: var(--cream);
       font-family: "Zen Maru Gothic", sans-serif; -webkit-font-smoothing: antialiased;
@@ -45,7 +48,7 @@
     .nw { display: inline-block; }
     svg.icon { width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
 
-    .aurora { position: fixed; z-index: 0; inset: -20% -30% auto; height: 65vh; min-height: 380px; pointer-events: none; opacity: .38; filter: blur(85px);
+    .aurora { position: absolute; z-index: 0; inset: -20% -30% auto; height: 65vh; min-height: 380px; pointer-events: none; opacity: .38; filter: blur(85px);
       background: radial-gradient(ellipse at 18% 42%, rgba(55,203,175,.24), transparent 34%), radial-gradient(ellipse at 70% 36%, rgba(170,126,255,.28), transparent 38%), radial-gradient(ellipse at 88% 70%, rgba(90,210,236,.2), transparent 34%);
       animation: aurora 20s ease-in-out infinite alternate; }
     @keyframes aurora { to { transform: translate3d(5%,4%,0) rotate(4deg) scale(1.1); } }
@@ -291,7 +294,7 @@
     </defs>
   </svg>
 
-  <div class="aurora" aria-hidden="true"></div>
+  <div class="aurora-wrap" aria-hidden="true"><div class="aurora"></div></div>
   <canvas id="sky" aria-hidden="true"></canvas>
 
   <!-- オープニング -->
